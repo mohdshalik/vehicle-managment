@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vehicles</title>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+</style>
+</head>
+<body>
+<ul >
+  <li><a class="active" href="{% url 'index' %}">Home</a></li>
+  {% if user.is_authenticated %}
+    <li style="color:red">hai {{user.username}}</li>
+    <li><a href="{% url 'logout' %}">logout</a></li>
+  {% else %}
+    <li><a href="{% url 'login' %}">login</a></li>
+    {% endif %}
+</ul>
+<ul style="background-color: #ffffff">
+        {% if user.is_authenticated %}
+    {% if user.is_superuser %}
+
+    <h1><a href="{% url 'vehicle_register' %}">add vehicle</a></h1><br>
+
+
+    {% endif %}
+    {% endif %}
+
+    {% for x in vehicles %}
+    <p><li class="nav-item">no:{{ x.id }} </li></p><br>
+    {% if user.is_authenticated %}
+    {% if user.is_superuser %}
+    <a href="{% url 'vehicle_update' x.id %}">   ..edit vehicle</a><br>
+    <a href="{% url 'vehicle_delete' x.id %}">   ..delete vehicle</a>
+    {% else %}
+    <a href="{% url 'vehicle_update' x.id %}">   ..edit vehicle</a>
+    {% endif %}
+    {% endif %}
+    <li class="nav-item">{{ x.vehicle_number }} </li><br>
+    <li class="nav-item">{{ x.vehicle_type }} </li><br>
+    <li  class="nav-item">{{ x.vehicle_model }} </li><br>
+    <li class="nav-item">{{ x.vehicle_desc }} </li><br>
+
+    {% endfor %}
+
+
+
+    <li></li>
+</ul>
+</body>
+</html>
